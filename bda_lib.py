@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 def dataStatistics(data,stat):
     a=0
@@ -34,3 +35,11 @@ def dataStatistics(data,stat):
         results=a/b
 
     return results
+
+def dataLoad(filename):
+    # Insert your code here
+    data=open(filename)
+    data = data.readlines()
+    rows=math.ceil(np.size(data))
+    data=np.reshape(data,[rows,1])
+    return data
