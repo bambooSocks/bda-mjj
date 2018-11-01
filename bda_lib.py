@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import math
 
 def dataStatistics(data,stat):
@@ -65,3 +66,42 @@ def dataLoad(filename):
             print("Error(s) in line {}: {}.".format(i+1, ", ".join(str(e) for e in err)) )
 
     return data
+
+def dataPlot(data):
+    # bacteria names and colors to be represented on plots
+    bac = ["Salmonella\nenterica", "Bacillus\ncereus", "Listeria", "Brochothrix\nthermosphacta"]
+    clr = ["red","green","blue","orange"]
+
+    # splitting the matrix and calculating the individual amounts of bacteria
+    splt_data = np.array([data[data.T[2] == 1], data[data.T[2] == 2], data[data.T[2] == 3], data[data.T[2] == 4]])
+    sum_data = [np.shape(d)[0] for d in splt_data]
+
+    # creating a figure and setting its size
+    plt.figure("Plots of bacterias", figsize=(10,6))
+
+    # first subplot showing the number of bacteria
+    plt.subplot(1,2,1)
+    plt.title("Number of bacteria")
+    plt.bar(bac,  sum_data, width=0.6, color=clr)
+
+    # second subplot showing the relation between growth rate and temperature
+    plt.subplot(1,2,2)
+    plt.title("Growth rate by temperature")
+
+    # looping through the splitted bacteria data 
+    for idx, sp in enumerate(splt_data):
+        # sorting the values by temperature
+        sp.view('i8,i8,i8').sort(order=['f1'], axis=0)
+        # creating individual plots for each of the bacteria using the right color and label
+        plt.plot(sp.T[0],sp.T[1], color=clr[idx], label=bac[idx])
+
+    # labeling the axes and creating the legend
+    plt.xlabel("Temperature (°C)")
+    plt.ylabel("Growth rate")
+    plt.legend(bac, bbox_to_anchor=(1.05, 1), loc=0)
+
+    # changing the layout to tight layout
+    plt.tight_layout()
+
+    # showing the plots
+    plt.show()
