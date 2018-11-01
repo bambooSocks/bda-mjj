@@ -2,8 +2,6 @@ import numpy as np
 import math
 
 def dataStatistics(data,stat):
-    a=0
-    b=0
 
     if stat == 'Mean Temperature':
         results=np.average(data[:,0])
@@ -21,19 +19,11 @@ def dataStatistics(data,stat):
         results=np.size(data,0)
 
     elif stat == 'Mean Cold Growth rate':
-        for id in data:
-            if id[0]>20:
-                a +=id[1]
-                b +=1
-        results=a/b
-
+        results = np.average(data[data.T[0]>20].T[1])
+        
     elif stat == 'Mean Hot Growth rate':
-        for id in data:
-            if id[0]<50:
-                a+=id[1]
-                b+=1
-        results=a/b
-
+        results = np.average(data[data.T[0]<50].T[1])
+        
     return results
 
 
