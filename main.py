@@ -1,15 +1,15 @@
 import numpy as np
 from time import sleep
 import misc
-import bda_lib
+import bda
 import os.path
 
-# Sets up necesarry values and dictionary
+# Global variables
 statOptions = np.array(["Mean temperature","Mean growth rate","Standard deviation of temperature","Standard deviation of growth rate","Rows","Mean cold growth rate","Mean hot growth rate"])
 statOptionsDict={1:'Mean Temperature',2:'Mean Growth rate',3:'Std Temperature',4:'Std Growth rate',5:'Rows',6:'Mean Cold Growth rate',7:'Mean Hot Growth rate'}
 menu = np.array(["Load Data","Filter Data","Display Statistics","Generate Plots","Quit"])
-data = []
-dataOri = []
+current_data = np.array([])
+orig_data = []
 activeFilt = np.zeros(6)
 
 
@@ -20,69 +20,69 @@ while True:
     
     choice = misc.displayMenu(menu)
     
-    #Calls the dataload function
+    # Calls the dataLoad function
     if choice == 1:
         print("\nYour datafile should be in the same directory as this script")
-        fileN=input("Input filename: ")
-        #Checks if the file exists
-        if os.path.exists(fileN):    
-            dataOri = bda_lib.dataLoad(fileN)
-            data = dataOri
+        filename=input("Input file name: ")
+        # Checks if the file exists
+        if os.path.exists(filename):    
+            orig_data = bda.dataLoad(filename)
+            current_data = orig_data
         else:
             print("File does not exist\n")
         
-    #Applies filters
+    # Applies filters
     elif choice == 2:
-        if data != []:
-            while True:
-                misc.printFilter(activeFilt)
-                filt = misc.displayMenu(np.array(["Apply Bacteria Filter","Apply Upper Growth Rate Filter","Apply Lower Growth Rate Filter","Clear Filters","Quit Filter Menu"]))
-                #Bacteria Filters
-                if filt == 1:
-                    print("Exclude bacteria type:")
-                    filtCho = misc.displayMenu(np.array(["Salmonella enterica","Bascillus cereus","Listeria","Brochothtrix thermosphacta"]))
-                    data = data[data[:,2]!=filtCho]
-                    activeFilt[filtCho-1] +=1
-                #Upper growth rate bound filter
-                elif filt == 2:
-                    filtCho = float(input("Input upper bound:"))
-                    data = data[data[:,1]<=filtCho]
-                    activeFilt[4] += filtCho
-                #Lower growth rate bound filter
-                elif filt == 3:
-                    filtCho = float(input("Input lower bound:"))
-                    data = data[data[:,1]>=filtCho]
-                    activeFilt[5] += filtCho
-                #Clears all filters
-                elif filt == 4:
-                    print("All filters has been removed")
-                    data = dataOri
-                    activeFilt = np.zeros(6)
-                #Quits the filter 
-                elif filt == 5:
-                    break
-        else:
-            print("No data has been loaded\n")
+        while True:
+            misc.printFilter(activeFilt)
+            filt = misc.displayMenu(np.array(["Apply Bacteria Filter","Apply Upper Growth Rate Filter","Apply Lower Growth Rate Filter","Clear Filters","Quit Filter Menu"]))
+            # Bacteria filters
+            if filt == 1 and np.size(current_data) != 0:
+                print("Exclude bacteria type:")
+                filtCho = misc.displayMenu(np.array(["Salmonella enterica","Bascillus cereus","Listeria","Brochothtrix thermosphacta"]))
+                current_data = current_data[current_data[:,2]!=filtCho]
+                activeFilt[filtCho-1] +=1
+            # Upper growth rate bound filter
+            elif filt == 2 and np.size(current_data) != 0:
+                filtCho = float(input("Input upper bound: "))
+                current_data = current_data[current_data[:,1]<=filtCho]
+                activeFilt[4] += filtCho
+            # Lower growth rate bound filter
+            elif filt == 3 and np.size(current_data) != 0:
+                filtCho = float(input("Input lower bound: "))
+                current_data = current_data[current_data[:,1]>=filtCho]
+                activeFilt[5] += filtCho
+            # Clears all filters
+            elif filt == 4:
+                print("All filters has been removed")
+                current_data = orig_data
+                activeFilt = np.zeros(6)
+            # Terminates the filter menu
+            elif filt == 5:
+                break
+            # Not data in the current buffer
+            elif np.size(current_data) == 0:
+            	print("No data, clear the filters or load new data before you continue")
             
-    #Calls the data statistics funtion
+    # Calls the data statistics funtion
     elif choice == 3:
-        if data != []:
-            #Displays menu with options for statistics
+        if np.size(current_data) != 0:
+            # Displays menu with options for statistics
             opt = misc.displayMenu(statOptions)
             optStat = statOptionsDict[opt]
-            print("{}: {}".format(optStat,bda_lib.dataStatistics(data,optStat)))
+            print("{}: {}".format(optStat,bda.dataStatistics(current_data,optStat)))
         else:
             print("No data has been loaded\n")
         
-    #Plots data
+    # Plots data
     elif choice == 4:
-        if data !=[]:
-            bda_lib.dataPlot(data)
+        if np.size(current_data) != 0:
+            bda.dataPlot(current_data)
         else:
             print("No data has been loaded\n")
             
-    #Quits the program  
+    # Terminates the program  
     elif choice == 5:
-        print("Quitting... Have a nice day")
+        print("Terminating... Have a nice day!")
         sleep(2)
         break
