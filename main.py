@@ -6,7 +6,7 @@ import os.path
 
 # Sets up necesarry values and dictionary
 statOptions = np.array(["Mean temperature","Mean growth rate","Standard deviation of temperature","Standard deviation of growth rate","Rows","Mean cold growth rate","Mean hot growth rate"])
-statOptionsDict={1:'Mean Temperature',2:'Mean Growth rate',3:'Std Temperature',4:'Std Growth rate',5:'Rows','6':'Mean Cold Growth rate','7':'Mean Hot Growth rate'}
+statOptionsDict={1:'Mean Temperature',2:'Mean Growth rate',3:'Std Temperature',4:'Std Growth rate',5:'Rows',6:'Mean Cold Growth rate',7:'Mean Hot Growth rate'}
 menu = np.array(["Load Data","Filter Data","Display Statistics","Generate Plots","Quit"])
 data = []
 dataOri = []
@@ -23,7 +23,7 @@ while True:
     #Calls the dataload function
     if choice == 1:
         print("\nYour datafile should be in the same directory as this script")
-        fileN=input("Input filename:")
+        fileN=input("Input filename: ")
         #Checks if the file exists
         if os.path.exists(fileN):    
             dataOri = bda_lib.dataLoad(fileN)
