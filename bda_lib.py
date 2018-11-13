@@ -71,12 +71,18 @@ def dataLoad(filename):
 
 def dataPlot(data):
     # bacteria names and colors to be represented on plots
-    bac = ["Salmonella\nenterica", "Bacillus\ncereus", "Listeria", "Brochothrix\nthermosphacta"]
-    clr = ["red","green","blue","orange"]
+    bac = np.array(["Salmonella\nenterica", "Bacillus\ncereus", "Listeria", "Brochothrix\nthermosphacta"])
+    clr = np.array(["red","green","blue","orange"])
 
     # splitting the matrix and calculating the individual amounts of bacteria
     splt_data = np.array([data[data.T[2] == 1], data[data.T[2] == 2], data[data.T[2] == 3], data[data.T[2] == 4]])
-    sum_data = [np.shape(d)[0] for d in splt_data]
+    sum_data = np.array([np.shape(d)[0] for d in splt_data])
+
+    # figure out what indices to use - exclude bacteria that is filtered out
+    bac = bac[sum_data > 0]
+    clr = clr[sum_data > 0]
+    splt_data = splt_data[sum_data > 0]
+    sum_data = sum_data[sum_data > 0]
 
     # creating a figure and setting its size
     plt.figure("Plots of bacterias", figsize=(10,6))
@@ -84,7 +90,7 @@ def dataPlot(data):
     # first subplot showing the number of bacteria
     plt.subplot(1,2,1)
     plt.title("Number of bacteria")
-    plt.bar(bac,  sum_data, width=0.6, color=clr)
+    plt.bar(bac, sum_data, width=0.6, color=clr)
 
     # second subplot showing the relation between growth rate and temperature
     plt.subplot(1,2,2)
@@ -93,7 +99,7 @@ def dataPlot(data):
     # looping through the splitted bacteria data 
     for idx, sp in enumerate(splt_data):
         # sorting the values by temperature
-        sp.view('i8,i8,i8').sort(order=['f1'], axis=0)
+        sp.view('i8,i8,i8').sort(order=['f0'], axis=0)
         # creating individual plots for each of the bacteria using the right color and label
         plt.plot(sp.T[0],sp.T[1], color=clr[idx], label=bac[idx])
 
