@@ -9,6 +9,7 @@ statOptionsDict={1:'Mean Temperature',2:'Mean Growth rate',3:'Std Temperature',4
 menu = np.array(["Load Data","Filter Data","Display Statistics","Generate Plots","Quit"])
 data = []
 dataOri = []
+activeFilt = np.array(np.zeros(6))
 
 while True:
     
@@ -28,8 +29,28 @@ while True:
         
     elif choice == 2:
         if data != []:
-            
-            print("to be done")
+            while True:
+                print("Current filters")
+                
+                filt = misc.displayMenu(np.array(["Apply Bacteria Filter","Apply Upper Growth Rate Filter","Apply Lower Growth Rate Filter","Clear Filters","Quit Filter Menu"]))
+                if filt == 1:
+                    print("Exclude bacteria type:")
+                    filtCho = misc.displayMenu(np.array(["Salmonella enterica","Bascillus cereus","Listeria","Brochothtrix thermosphacta"]))
+                    data = data[data[:,2]!=filtCho]
+                    activeFilt[filtCho-1] +=1
+                elif filt == 2:
+                    filtCho = float(input("Input upper bound:"))
+                    data = data[data[:,1]<=filtCho]
+                    activeFilt[4] += filtCho
+                elif filt == 3:
+                    filtCho = float(input("Input lower bound:"))
+                    data = data[data[:,1]>=filtCho]
+                    activeFilt[5] += filtCho
+                elif filt == 4:
+                    print("All filters has been removed")
+                    data = dataOri
+                elif filt == 5:
+                    break
         else:
             print("No data has been loaded\n")
             
