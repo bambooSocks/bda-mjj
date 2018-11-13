@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 import math
 
 def dataStatistics(data,stat):
-
+    #Takes a numpy array and peforms various statistical analasys on it
+    #To choose a specific option the functions needs a string
+    
     if stat == 'Mean Temperature':
         results=np.average(data[:,0])
 
