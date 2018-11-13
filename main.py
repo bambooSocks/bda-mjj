@@ -13,7 +13,7 @@ activeFilt = np.zeros(6)
 
 while True:
     
-    misc.printFilters(activeFilt)
+    misc.printFilter(activeFilt)
     
     choice = misc.displayMenu(menu)
 
