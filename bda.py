@@ -67,6 +67,7 @@ def dataLoad(filename):
         else:
             print("Error(s) in line {}: {}.".format(i+1, ", ".join(str(e) for e in err)) )
 
+    print("")   # new line
     return data
 
 def dataPlot(data):
