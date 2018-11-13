@@ -1,6 +1,9 @@
 import numpy as np
 
 def inputNumber(prompt):
+    #Author: Mikkel N. Schmidt, mnsc@dtu.dk, 2015
+    #Takes input and checks that is is an integer, if it is not, keeps asking for input
+    
     while True:
         try:
             num = int(input(prompt))
@@ -12,6 +15,10 @@ def inputNumber(prompt):
     return num
 
 def displayMenu(options):
+    #Author: Mikkel N. Schmidt, mnsc@dtu.dk, 2015
+    #Displays menu with the options in the input array
+    
+    print("\n")
     for i in range(len(options)):
         print("{:d}. {:s}".format(i+1, options[i]))
 
@@ -22,6 +29,9 @@ def displayMenu(options):
     return choice
 
 def printFilter(fA):
+    #Takes an array six long, with information on curently applied filters
+    #If no filters are applied outputs nothing
+    
     msg = []
     if fA[0]==1:
         msg.append("Salmonella enterica")
