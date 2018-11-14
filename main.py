@@ -53,13 +53,13 @@ while True:
                 active_filter[chosen_filter-1] =1
             # Upper growth rate bound filter
             elif filt == 2 and np.size(current_data) != 0:
-                chosen_filter = float(input("Input upper bound: "))
+                chosen_filter = inputNumber("Input upper bound: ","f")
                 # removes all the data outside of the bounds
                 current_data = current_data[current_data[:,1] <= chosen_filter]
                 active_filter[4] = chosen_filter
             # Lower growth rate bound filter
             elif filt == 3 and np.size(current_data) != 0:
-                chosen_filter = float(input("Input lower bound: "))
+                chosen_filter = inputNumber("Input lower bound: ","f")
                 # removes all the data outside of the bounds
                 current_data = current_data[current_data[:,1] >= chosen_filter]
                 active_filter[5] = chosen_filter

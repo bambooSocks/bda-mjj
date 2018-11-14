@@ -1,12 +1,16 @@
 import numpy as np
 
-def inputNumber(prompt):
-    #Author: Mikkel N. Schmidt, mnsc@dtu.dk, 2015
-    #Takes input and checks that is is an integer, if it is not, keeps asking for input
+def inputNumber(prompt, dtype):
+    #Author: Mikkel N. Schmidt, mnsc@dtu.dk, 2015, modified by Johan Emil Levin-Jensen
+    #Asks for input and checks that is is an integer or float depending on dtype
+    #If it is not the spcified data type, keeps asking for input
     
     while True:
         try:
-            num = int(input(prompt))
+            if dtype == 'i':
+                num = int(input(prompt))
+            elif dtype == 'f':
+                num = float(input(prompt))
             break
         except ValueError:
             print("Not a valid entry")
@@ -24,7 +28,7 @@ def displayMenu(options):
     choice = 0
 
     while not(np.any(choice == np.arange(len(options))+1)):
-        choice = inputNumber("Please choose a menu item: ")
+        choice = inputNumber("Please choose a menu item: ","i")
 
     print("")   # new line
 
