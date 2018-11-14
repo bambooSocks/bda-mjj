@@ -31,6 +31,9 @@ def dataStatistics(data,stat):
 
 
 def dataLoad(filename):
+    # this function takes a filename string as a parameter representing
+    # the file that should be loaded, validated and return an matrix with
+    # correct values
 
     matrix = np.array([]) # This variable will consist of data from txt
 
@@ -71,6 +74,8 @@ def dataLoad(filename):
     return data
 
 def dataPlot(data):
+    # this function displays plots generated from the data passed as a parameter
+    
     # bacteria names and colors to be represented on plots
     bac = np.array(["Salmonella\nenterica", "Bacillus\ncereus", "Listeria", "Brochothrix\nthermosphacta"])
     clr = np.array(["red","green","blue","orange"])
